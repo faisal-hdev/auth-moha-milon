@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
 
 const Home = () => {
   return (
     <div>
-      <h2>This is Home</h2>
+      <h2>This is Home </h2>
     </div>
   );
 };

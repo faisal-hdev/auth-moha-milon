@@ -1,15 +1,27 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
 
 const Register = () => {
+  const { createUser } = useContext(AuthContext);
+
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log(name, email, password);
+
+    //create user in firebase
+    createUser(email, password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -23,7 +35,7 @@ const Register = () => {
             a id nisi.
           </p>
         </div>
-        <div className="card space-y-3 shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <div className="card space-y-3 shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
           <form onSubmit={handleRegister} className="card-body pb-0">
             <div className="form-control">
               <label className="label">
@@ -44,7 +56,7 @@ const Register = () => {
               <input
                 type="email"
                 name="email"
-                placeholder="Email"
+                placeholder="Enter Your Email"
                 className="input input-bordered"
                 required
               />
@@ -56,7 +68,7 @@ const Register = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Enter Your Password"
                 className="input input-bordered"
                 required
               />

@@ -1,8 +1,21 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
 
 const Nav = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        console.log("User logOut successfully");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const navLinks = (
     <>
       <li>
@@ -14,11 +27,24 @@ const Nav = () => {
       <li>
         <NavLink to="/register">Register</NavLink>
       </li>
+      <li>
+        <NavLink to="/orders">Orders</NavLink>
+      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink to="/profile">Profile</NavLink>
+          </li>
+          <li>
+            <NavLink to="/dashboard">Dashboard</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (
     <div>
-      <div className="navbar bg-gray-100 dark:bg-slate-950 border text-black dark:text-white">
+      <div className="navbar bg-gray-100 dark:bg-slate-950 text-black dark:text-white">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -52,7 +78,18 @@ const Nav = () => {
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>
         </div>
         <div className="navbar-end">
-          <a className="btn btn-outline">Button</a>
+          {user ? (
+            <>
+              <span>{user.email}</span>
+              <button onClick={handleLogOut} className="btn">
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link to="/login">
+              <button className="btn">Login</button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
